@@ -18,4 +18,6 @@ CREATE TABLE collected_data (
     serial_date_of_adding date not null
 );
 
+Example of collected data: 
+
 ![image](https://user-images.githubusercontent.com/86420598/152660770-5927386b-5ba5-4aeb-8a45-1b5f1a2ebcdf.png)
