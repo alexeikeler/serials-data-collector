@@ -25,8 +25,8 @@ Example of collected data:
 
 # How to launch
 
-###python3 main.py -s 
-####(just show serials which were added today)
-###python3 main.py -su 
-####(show and add to a database, so db  name, username and password is required)
+### python3 main.py -s 
+#### (just show serials which were added today)
+### python3 main.py -su 
+#### (show and add to a database, so db  name, username and password is required)
 
