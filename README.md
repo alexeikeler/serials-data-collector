@@ -1,9 +1,8 @@
 # serials-data-collector
 Python script for collecting and storing data about new serials episodes from http://seasonvar.ru.
 
-PostgreSQL 13.4 required. If flag -u or --update will be passed to program (python3 main.py -u (--update)) program will try to store collected data into a database SerialsData, so one is required.
-
-Connection to database could be established via CONNECTION_STRING.
+PostgreSQL 13.4 required. If flag -u or --update will be passed to a program
+then it will ask for database name, username and password. If everything is ok, new collected data will be inserted.
 
 Example of table for storing collected data:
 
@@ -23,3 +22,11 @@ CREATE TABLE collected_data (
 Example of collected data: 
 
 ![image](https://user-images.githubusercontent.com/86420598/152660770-5927386b-5ba5-4aeb-8a45-1b5f1a2ebcdf.png)
+
+# How to launch
+
+###python3 main.py -s 
+####(just show serials which were added today)
+###python3 main.py -su 
+####(show and add to a database, so db  name, username and password is required)
+

@@ -1,6 +1,5 @@
 import pandas as pd
 import psycopg2
-import os
 import time
 
 
@@ -30,8 +29,7 @@ class DataBase:
 
         try:
 
-            os.remove(csv_path)
-            data.to_csv(csv_path, sep=separator, index=True, header=False)
+            data.to_csv(csv_path, sep=separator, index=True, header=False, mode='w+')
 
             with open(csv_path) as csv_f:
 
