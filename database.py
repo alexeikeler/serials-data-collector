@@ -8,10 +8,12 @@ class DataBase:
     def __init__(self):
         self.__connection = None
 
-    def connect(self, conn_str: str) -> None:
+    def connect(self, dbname: str, user: str, password: str) -> None:
 
         try:
-            self.__connection = psycopg2.connect(conn_str)
+            self.__connection = psycopg2.connect(
+                dbname=dbname, user=user, password=password
+            )
 
         except Exception as e:
             raise SystemError(f"ERROR IN <<DataBase.connect>> :\n{repr(e)}")
@@ -20,7 +22,7 @@ class DataBase:
             print("\nConnection established successfully.")
 
     def update_database(
-        self, data: pd.DataFrame, querry: str, csv_path: str, separator: str = "|"
+        self, data: pd.DataFrame, query: str, csv_path: str, separator: str = "|"
     ) -> None:
 
         start = time.time()
@@ -33,16 +35,13 @@ class DataBase:
 
             with open(csv_path) as csv_f:
 
-                cursor.copy_expert(querry, csv_f)
+                cursor.copy_expert(query, csv_f)
                 self.__connection.commit()
                 cursor.close()
 
         except Exception as e:
-            raise ValueError(f'\nERROR IN <<DataBase.update_database>> :\n{repr(e)}')
+            raise ValueError(f"\nERROR IN <<DataBase.update_database>> :\n{repr(e)}")
 
         else:
             update_time = round(time.time() - start, 2)
-            print(f'\nDatabase updated successfully in {update_time} sec.\n')
-
-    def exequte_querry(self, querry: str):
-        pass
+            print(f"\nDatabase updated successfully in {update_time} sec.\n")

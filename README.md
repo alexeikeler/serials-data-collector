@@ -1,7 +1,7 @@
 # serials-data-collector
 Python script for collecting and storing data about new serials episodes from http://seasonvar.ru.
 
-PostgreSQL 13.4 required. If flag -u or --update will be passed to programm (python3 main.py -u (--update)) programm will try to store collected data into a database SerialsData, so one is required.
+PostgreSQL 13.4 required. If flag -u or --update will be passed to program (python3 main.py -u (--update)) program will try to store collected data into a database SerialsData, so one is required.
 
 Connection to database could be established via CONNECTION_STRING.
 
@@ -15,7 +15,9 @@ CREATE TABLE collected_data (
     serial_link varchar(128) not null check(length(serial_link) > 0),
     serial_imdb_rating numeric(2, 1) check ( serial_imdb_rating > 0),
     serial_voted_for_rating integer check(serial_voted_for_rating > 0),
-    serial_date_of_adding date not null
+    serial_date_of_adding date not null,
+
+    primary key(serial_id, serial_date_of_adding)
 );
 
 Example of collected data: 

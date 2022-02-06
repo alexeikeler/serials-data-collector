@@ -10,24 +10,23 @@ from datetime import date
 
 
 class Scraper:
-
     def __init__(self):
 
-        self.todays_content_class = 'news'
-        self.current_date_class = 'news-head'
+        self.todays_content_class = "news"
+        self.current_date_class = "news-head"
 
-        self.series_class = 'news-w'
-        self.series_name_class = 'news_n'
-        self.series_episode_added_class = 'news_s'
-        self.imdb_rating_class = 'pgs-sinfo_list rating'
+        self.series_class = "news-w"
+        self.series_name_class = "news_n"
+        self.series_episode_added_class = "news_s"
+        self.imdb_rating_class = "pgs-sinfo_list rating"
 
-        self.genre = 'pgs-sinfo_list'
+        self.genre = "pgs-sinfo_list"
 
-        self.href_tag = 'a'
+        self.href_tag = "a"
 
     @staticmethod
     def _send_request(link):
-        return BeautifulSoup(requests.get(link).text, 'lxml')
+        return BeautifulSoup(requests.get(link).text, "lxml")
 
     @staticmethod
     def _process_data(raw_data) -> Iterator[str]:
@@ -36,13 +35,13 @@ class Scraper:
     @staticmethod
     def _convert_to_df(req_res: dict) -> pd.DataFrame:
 
-        df = pd.DataFrame.from_dict(req_res, orient='columns')
-        df['V'] = df['V'].astype('Int64')
+        df = pd.DataFrame.from_dict(req_res, orient="columns")
+        df["V"] = df["V"].astype("Int64")
         return df
 
     @staticmethod
     def _print_pulled_data(df: pd.DataFrame):
-        print(tabulate(df, headers=df.columns.values, colalign="center"))
+        print(tabulate(df, headers=df.columns.values, colalign="center"), "\n")
 
     def pull_data(self, link: str, show_res: bool) -> pd.DataFrame:
 
@@ -54,19 +53,21 @@ class Scraper:
 
         data = self._send_request(link).find(class_=self.todays_content_class)
 
-        req_res['Name'] = self._process_data(
+        req_res["Name"] = self._process_data(
             data.find_all(class_=self.series_name_class)
         )
 
-        req_res['Episodes added'] = self._process_data(
+        req_res["Episodes added"] = self._process_data(
             data.find_all(class_=self.series_episode_added_class)
         )
 
-        req_res['Link'] = [
-            link + link_.get('href') for link_ in data.find_all(self.href_tag)
+        req_res["Link"] = [
+            link + link_.get("href") for link_ in data.find_all(self.href_tag)
         ]
 
-        for lnk in tqdm(req_res['Link'], desc='Links processing: '):
+        print()
+
+        for lnk in tqdm(req_res["Link"], desc="Links processing: "):
 
             concr_ser = self._send_request(lnk)
 
@@ -79,14 +80,14 @@ class Scraper:
                 r1.append(float(rating_info[1]))
                 r2.append(int(rating_info[2]))
 
-        req_res['R'] = r1
-        req_res['V'] = r2
+        req_res["R"] = r1
+        req_res["V"] = r2
 
         r_date: list[str] = [date.today().__str__()] * len(r1)
-        req_res['Date'] = r_date
+        req_res["Date"] = r_date
 
         finding_data_time = round(time.time() - start, 2)
-        print(f'\nData found successfully in {finding_data_time} sec.\n')
+        print(f"\nData found successfully in {finding_data_time} sec.\n")
 
         req_res_df = self._convert_to_df(req_res)
 
@@ -94,4 +95,3 @@ class Scraper:
             self._print_pulled_data(req_res_df)
 
         return req_res_df
-
