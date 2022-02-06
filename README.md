@@ -30,3 +30,8 @@ Example of collected data:
 ### python3 main.py -su 
 #### (show and add to a database, so db  name, username and password is required)
 
+# Installing required packages
+
+pip install -r requirements.txt
+
+If there is an error with installing psycopg2 try installing psycopg2-binary.
